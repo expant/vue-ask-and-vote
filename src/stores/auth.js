@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
-import { useRouter } from 'vue-router'
 
 const apiKey = import.meta.env.VITE_API_KEY_FIREBASE
 
@@ -33,7 +32,6 @@ export const useAuthStore = defineStore('auth', () => {
   })
   const error = ref('')
   const loader = ref(false)
-  const router = useRouter()
 
   const auth = async (payload, type) => {
     const stringUrlType = type === 'signup' ? 'signUp' : 'signInWithPassword'
@@ -48,6 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
           returnSecureToken: true,
         },
       )
+
       userInfo.value = {
         token: response.data.idToken,
         email: response.data.email,
@@ -55,9 +54,14 @@ export const useAuthStore = defineStore('auth', () => {
         refreshToken: response.data.refreshToken,
         expiresIn: response.data.expiresIn,
       }
-      router.push('/')
+      localStorage.setItem('userTokens', JSON.stringify({ 
+        token: userInfo.value.token, 
+        refreshToken: userInfo.value.refreshToken,
+        expiresIn: userInfo.value.expiresIn,
+      }))
     } catch (err) {
       error.value = getErrorMessage(err)
+      throw error.value;
     } finally {
       loader.value = false
     }

@@ -1,14 +1,17 @@
 <script setup>
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 import BaseButton from '@/components/BaseButton.vue'
 
 const authStore = useAuthStore()
+const router = useRouter()
 const email = ref('')
 const password = ref('')
 
 const signin = async () => {
   await authStore.auth({ email: email.value, password: password.value }, 'signin')
+  router.push('/')
 }
 </script>
 

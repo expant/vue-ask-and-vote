@@ -4,6 +4,7 @@ import { initializeApp } from 'firebase/app'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import App from './App.vue'
+import './api.js'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCamcC2oou2Sj0NAw0PO7ulyv9Sh6f1La0',

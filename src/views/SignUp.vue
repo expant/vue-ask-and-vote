@@ -1,7 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-// import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import axios from 'axios'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import BaseButton from '@/components/BaseButton.vue'
@@ -16,6 +15,7 @@ const password = ref('')
 
 const signup = async () => {
   await authStore.auth({ email: email.value, password: password.value }, 'signup')
+  router.push('/')
 }
 </script>
 
