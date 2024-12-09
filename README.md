@@ -1,6 +1,6 @@
-# vue-project
+# Ask&Vote
 
-This template should help get you started developing with Vue 3 in Vite.
+The Ask & Vote project is an interactive polling platform where users can easily create polls with multiple answer options and share them with others, allowing everyone to participate in voting and express their opinions on various topics.
 
 ## Recommended IDE Setup
 
