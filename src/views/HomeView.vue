@@ -9,7 +9,7 @@ const authStore = useAuthStore()
 <template>
   <div class="container my-0 mx-auto font-IBMPlexMono">
     <header class="flex justify-around items-center py-10">
-      <h1 class="font-bold text-3xl text-green-500">Ask & Vote</h1>
+      <h1 class="font-bold text-3xl text-green-500">Ask&Vote</h1>
       <div v-if="!authStore.userInfo.token" class="flex items-center gap-5">
         <router-link to="/signin" class="font-medium text-xl text-gray-600 hover:text-gray-700"
           >Войти</router-link
