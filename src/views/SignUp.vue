@@ -1,20 +1,29 @@
 <script setup>
-import axios from 'axios'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import BaseButton from '@/components/BaseButton.vue'
+import axiosApiInstance from '@/api'
 
 // TODO: Переписать валидацию на Vee Validate
 
-// const username = ref('')
+const userDatabasePath = import.meta.env.VITE_FIREBASE_DB_USERS_URL
+const username = ref('')
 const authStore = useAuthStore()
 const router = useRouter()
 const email = ref('')
 const password = ref('')
 
 const signup = async () => {
+  const userData = {
+    username: username.value,
+    email: email.value,
+  }
+
+  // TODO: Создать стор user.js
+
   await authStore.auth({ email: email.value, password: password.value }, 'signup')
+  await axiosApiInstance.post(userDatabasePath, userData)
   router.push('/')
 }
 </script>
@@ -26,17 +35,18 @@ const signup = async () => {
       @submit.prevent="signup"
       class="flex flex-col gap-6 max-w-1/4 rounded-md p-5 bg-white border border-solid shadow-sm"
     >
-      <!-- <div>
-        <label for="username" class="inline-block mb-2">Придумай ник</label>
+      <div>
+        <label for="username" class="inline-block mb-2">Придумайте ник</label>
         <input
           type="text"
           id="username"
           name="username"
+          autocomplete
           required
           v-model="username"
           class="w-full text-lg px-2 py-2.5 border border-solid border-gray-200 rounded outline-none"
         />
-      </div> -->
+      </div>
       <div v-if="authStore.error">
         <p class="text-red-500 text-xs">{{ authStore.error }}</p>
       </div>
@@ -46,6 +56,7 @@ const signup = async () => {
           type="email"
           id="email"
           name="email"
+          autocomplete
           required
           v-model="email"
           class="w-full text-base px-2 py-2.5 border border-solid border-gray-200 rounded outline-none"
@@ -57,6 +68,7 @@ const signup = async () => {
           type="password"
           id="password"
           name="password"
+          autocomplete
           required
           v-model="password"
           class="w-full text-base px-2 py-2.5 border border-solid border-gray-200 rounded outline-none"
