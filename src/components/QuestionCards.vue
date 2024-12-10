@@ -8,14 +8,12 @@ import { ref, onMounted } from 'vue'
 const authStore = useAuthStore()
 const cards = ref([])
 const showLoader = ref(false)
-
-// FIXME: fix db rules
-const url = `https://vue-surveys-96197-default-rtdb.europe-west1.firebasedatabase.app/questions`
+const databaseUrl = import.meta.env.VITE_FIREBASE_DB_QUESTIONS_URL
 
 const getAllCards = async () => {
   showLoader.value = true
   try {
-    const response = await axiosApiInstance.get(url)
+    const response = await axiosApiInstance.get(databaseUrl)
     cards.value = response.data
   } catch (err) {
     console.log(err.response)
