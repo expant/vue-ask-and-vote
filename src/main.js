@@ -8,7 +8,7 @@ import './utils/checkToken.js'
 import './api.js'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCamcC2oou2Sj0NAw0PO7ulyv9Sh6f1La0',
+  apiKey: import.meta.env.VITE_API_KEY_FIREBASE,
   authDomain: 'vue-surveys-96197.firebaseapp.com',
   projectId: 'vue-surveys-96197',
   storageBucket: 'vue-surveys-96197.firebasestorage.app',
