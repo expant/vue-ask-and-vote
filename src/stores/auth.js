@@ -28,6 +28,7 @@ export const useAuthStore = defineStore('auth', () => {
     email: '',
     userId: '',
     refreshToken: '',
+    username: '',
   })
   const error = ref('')
   const loader = ref(false)
@@ -51,9 +52,10 @@ export const useAuthStore = defineStore('auth', () => {
         email: response.data.email,
         userId: response.data.localId,
         refreshToken: response.data.refreshToken,
+        username: '',
       }
       localStorage.setItem(
-        'userTokens',
+        'userData',
         JSON.stringify({
           token: userInfo.value.token,
           refreshToken: userInfo.value.refreshToken,

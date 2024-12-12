@@ -4,7 +4,7 @@ import { initializeApp } from 'firebase/app'
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import App from './App.vue'
-import './utils/checkToken.js'
+import './utils/userData.js'
 import './api.js'
 
 const firebaseConfig = {

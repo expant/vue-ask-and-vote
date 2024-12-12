@@ -1,8 +1,8 @@
 <script setup>
-import checkToken from '@/utils/checkToken.js'
+import { checkUserData } from '@/utils/userData.js'
 import { useAuthStore } from '@/stores/auth'
 
-checkToken(useAuthStore())
+checkUserData(useAuthStore())
 </script>
 
 <template>
