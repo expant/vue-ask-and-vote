@@ -1,19 +1,25 @@
 <script setup>
 defineProps({
-  color: String,
-  size: String,
+  color: {
+    type: String,
+    default: '#4b5563',
+  },
+  size: {
+    type: String,
+    default: '20px',
+  },
 })
 </script>
 
 <template>
   <svg
-    :fill="color || '#4b5563'"
-    :width="size || '20px'"
-    :height="size || '20px'"
+    :fill="color"
+    :width="size"
+    :height="size"
     viewBox="0 0 22 22"
     xmlns="http://www.w3.org/2000/svg"
     id="memory-logout"
-    :stroke="color || '#4b5563'"
+    :stroke="color"
   >
     <g id="SVGRepo_bgCarrier" stroke-width="0" />
     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
