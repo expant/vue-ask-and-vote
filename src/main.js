@@ -7,6 +7,8 @@ import App from './App.vue'
 import './utils/userData.js'
 import './api.js'
 
+// TODO: значения полей firebaseConfig перенести в .env
+
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY_FIREBASE,
   authDomain: 'vue-surveys-96197.firebaseapp.com',
