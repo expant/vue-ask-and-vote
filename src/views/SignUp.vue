@@ -2,32 +2,33 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { object, string } from 'yup'
 import { addUserDataToLocalStorage } from '@/utils/userData'
+import { Field, Form, ErrorMessage } from 'vee-validate'
 import BaseButton from '@/components/BaseButton.vue'
-import FormField from '@/components/FormField.vue'
 import axiosApiInstance from '@/api'
-
-// TODO: Переписать валидацию на Vee Validate
 
 const authStore = useAuthStore()
 const router = useRouter()
+
 const uid = ref('')
-const username = ref('')
 const email = ref('')
 const password = ref('')
 
+const schema = object({
+  email: string().required('Обязательное поле').email('Неверный формат email'),
+  password: string().required('Обязательное поле').min(8, 'Пароль должен быть не менее 8 символов'),
+})
+
 const addUserToDb = async () => {
   uid.value = authStore.userInfo.userId
-  const userData = { username: username.value, email: email.value }
   const pathToUser = `https://vue-surveys-96197-default-rtdb.europe-west1.firebasedatabase.app/users/${uid.value}.json`
-  await axiosApiInstance.post(pathToUser, userData)
+  await axiosApiInstance.post(pathToUser, { email: email.value })
 }
 
 const signup = async () => {
-  console.log(username.value)
   await authStore.auth({ email: email.value, password: password.value }, 'signup')
   await addUserToDb()
-  authStore.userInfo.username = username.value
   addUserDataToLocalStorage(authStore)
   router.push('/')
 }
@@ -36,16 +37,37 @@ const signup = async () => {
 <template>
   <div class="w-screen h-screen flex flex-col justify-center items-center gap-8 font-IBMPlexMono">
     <h2 class="text-2xl text-green-600">Регистрация</h2>
-    <form
-      @submit.prevent="signup"
-      class="flex flex-col gap-6 max-w-1/4 rounded-md p-5 bg-white border border-solid shadow-sm"
+
+    <Form
+      @submit="signup"
+      :validation-schema="schema"
+      class="relative flex flex-col gap-8 max-w-1/4 rounded-md p-5 bg-white border border-solid shadow-sm"
     >
-      <div v-if="authStore.error">
-        <p class="text-red-500 text-xs">{{ authStore.error }}</p>
+      <div class="absolute right-5 top-5 text-sm text-red-500" v-if="authStore.error">
+        {{ authStore.error }}
       </div>
-      <form-field type="text" name="username" v-model="username">Придумайте ник</form-field>
-      <form-field type="email" name="email" v-model="email">Email</form-field>
-      <form-field type="password" name="password" v-model="password">Введите пароль 😅</form-field>
+
+      <div class="relative">
+        <label class="inline-block mb-2">Email</label>
+        <Field
+          name="email"
+          v-model="email"
+          class="w-full text-lg px-2 py-2.5 border border-solid border-gray-200 rounded outline-none"
+        />
+        <ErrorMessage name="email" class="absolute left-2 -bottom-5 text-sm text-red-500" />
+      </div>
+
+      <div class="relative">
+        <label class="inline-block mb-2">Введите пароль 😅</label>
+        <Field
+          name="password"
+          type="password"
+          v-model="password"
+          class="w-full text-lg px-2 py-2.5 border border-solid border-gray-200 rounded outline-none"
+        />
+        <ErrorMessage name="password" class="absolute left-2 -bottom-5 text-sm text-red-500" />
+      </div>
+
       <div>
         <base-button :loading="authStore.loader">Зарегистрироваться</base-button>
         <div class="text-right mt-2">
@@ -53,7 +75,7 @@ const signup = async () => {
           <router-link to="/signin" class="text-blue-500 hover:text-blue-600">Войти</router-link>
         </div>
       </div>
-    </form>
+    </Form>
   </div>
 </template>
 
