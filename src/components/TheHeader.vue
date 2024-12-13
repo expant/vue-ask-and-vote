@@ -21,7 +21,7 @@ const userMenu = ref(false)
       >
     </div>
     <div v-else class="flex items-center gap-5">
-      <div>{{ authStore.userInfo.username }}</div>
+      <div>{{ authStore.userInfo.email }}</div>
       <div class="relative">
         <div
           contextmenu="popup-usermenu"
