@@ -4,8 +4,11 @@ import QuestionCardsItem from '@/components/QuestionCardsItem.vue'
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 import { useAuthStore } from '@/stores/auth'
 import { ref, onMounted } from 'vue'
+// import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
+// const routes = useRouter()
+
 const cards = ref([])
 const showLoader = ref(false)
 const databaseUrl = import.meta.env.VITE_FIREBASE_DB_QUESTIONS_URL
