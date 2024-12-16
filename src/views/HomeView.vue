@@ -11,5 +11,3 @@ import TheHeader from '@/components/TheHeader.vue'
     </main>
   </div>
 </template>
-
-<style scoped></style>

@@ -8,6 +8,8 @@ const apiKey = import.meta.env.VITE_API_KEY_FIREBASE
 const insertTokenIntoUrl = (config) => {
   const url = config.url
 
+  console.log(config)
+
   if (url.includes('signInWithPassword') || url.includes('signUp')) {
     return config
   }
