@@ -1,17 +1,18 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import EditProfile from '@/components/EditProfile.vue';
-import QuestionCardsUser from '@/components/QuestionCardsUser.vue';
-import { computed } from 'vue';
-
-const currentTab = ref(EditProfile)
-// const tabs = { EditProfile, QuestionCardsUser }
+import EditProfile from '@/components/EditProfile.vue'
+import QuestionCardsUser from '@/components/QuestionCardsUser.vue'
 
 const authStore = useAuthStore()
-const firstLetterForAvatar = authStore.userInfo.email[0].toUpperCase()
 
-const switchTab = (tab) => { currentTab.value = tab }
+const currentTab = ref('EditProfile')
+const tabs = { EditProfile, QuestionCardsUser }
+const contextTabs = {
+  EditProfile: 'Редактировать профиль',
+  QuestionCardsUser: 'Мои опросы',
+}
+const firstLetter = authStore.userInfo.email[0].toUpperCase()
 </script>
 
 <template>
@@ -21,12 +22,18 @@ const switchTab = (tab) => { currentTab.value = tab }
 
     <!-- Profile content -->
     <div class="container mx-auto px-4 -mt-24">
-      <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
+      <div
+        class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6"
+      >
         <!-- Avatar -->
-        <div class="w-40 h-40 rounded-full overflow-hidden border-4 border-white bg-white shadow-lg">
+        <div
+          class="w-40 h-40 rounded-full overflow-hidden border-4 border-white bg-white shadow-lg"
+        >
           <!-- Replace with actual avatar image if available -->
-          <div class="w-full h-full bg-gray-300 flex items-center justify-center text-gray-600 text-4xl font-bold">
-            {{ firstLetterForAvatar }}
+          <div
+            class="w-full h-full bg-gray-300 flex items-center justify-center text-gray-600 text-4xl font-bold"
+          >
+            {{ firstLetter }}
           </div>
         </div>
 
@@ -46,13 +53,22 @@ const switchTab = (tab) => { currentTab.value = tab }
           Назад
         </router-link>
         <div class="flex gap-4">
-          <button @click="switchTab(EditProfile)" class="text-sm font-medium text-green-600 hover:text-black">Редактировать профиль</button>
-          <button @click="switchTab(QuestionCardsUser)" class="text-sm font-medium text-green-600 hover:text-black">Мои опросы</button>
+          <button
+            v-for="(_, tab) in tabs"
+            :key="tab"
+            :class="[
+              'text-sm font-medium hover:text-black',
+              currentTab === tab ? 'text-black' : 'text-green-600',
+            ]"
+            @click="currentTab = tab"
+          >
+            {{ contextTabs[tab] }}
+          </button>
         </div>
       </div>
-      
+
       <KeepAlive>
-        <component :is="currentTab" class="mt-4"></component>
+        <component :is="tabs[currentTab]" class="mt-4"></component>
       </KeepAlive>
     </div>
   </div>
