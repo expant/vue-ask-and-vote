@@ -30,7 +30,7 @@ const refreshTokenByError = async (error) => {
   originalRequest._retry = true
 
   try {
-    const refresh_token = JSON.parse(localStorage.getItem('userTokens')).refreshToken
+    const refresh_token = JSON.parse(localStorage.getItem('userData')).refreshToken
     const newTokens = await axios.post(
       `https://securetoken.googleapis.com/v1/token?key=${apiKey}`,
       {
@@ -38,17 +38,19 @@ const refreshTokenByError = async (error) => {
         refresh_token,
       },
     )
+
     authStore.userInfo.token = newTokens.data.access_token
     authStore.userInfo.refreshToken = newTokens.data.refresh_token
     localStorage.setItem(
-      'userTokens',
+      'userData',
       JSON.stringify({
         token: newTokens.data.access_token,
         refreshToken: newTokens.data.refresh_token,
       }),
     )
   } catch (err) {
-    localStorage.removeItem('userTokens')
+    console.error(err)
+    localStorage.removeItem('userData')
     router.push('/signin')
     authStore.userInfo.token = ''
     authStore.userInfo.refreshToken = ''
