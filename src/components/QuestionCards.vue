@@ -1,5 +1,5 @@
 <script setup>
-import axiosApiInstance from '@/api'
+import axiosApiInstance from '@/axios/request'
 import QuestionCardsItem from '@/components/QuestionCardsItem.vue'
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 import { useAuthStore } from '@/stores/auth'
@@ -12,6 +12,7 @@ const databaseUrl = import.meta.env.VITE_FIREBASE_DB_QUESTIONS_URL + '.json'
 
 const getAllCards = async () => {
   showLoader.value = true
+
   try {
     const response = await axiosApiInstance.get(databaseUrl)
     const data = Object.entries(response.data)
@@ -25,17 +26,17 @@ const getAllCards = async () => {
       id,
     }))
   } catch (err) {
-    console.log(err)
+    console.error(err)
   } finally {
     showLoader.value = false
   }
 }
 
-onMounted(async () => {
-  await getAllCards()
+onMounted(() => {
+  getAllCards()
 })
 
-watch(authStore.userInfo, getAllCards())
+// watch(authStore.userInfo, getAllCards())
 </script>
 
 <template>

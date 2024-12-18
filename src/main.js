@@ -5,7 +5,7 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import App from './App.vue'
 import './utils/userData.js'
-import './api.js'
+import './axios/request.js'
 
 // TODO: значения полей firebaseConfig перенести в .env
 

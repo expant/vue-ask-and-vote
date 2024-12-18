@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import axiosApiInstance from '@/api'
+import axiosApiInstance from '@/axios/request'
 
 const apiKey = import.meta.env.VITE_API_KEY_FIREBASE
 

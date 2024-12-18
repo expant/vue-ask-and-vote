@@ -1,5 +1,5 @@
 <script setup>
-import axiosApiInstance from '@/api'
+import axiosApiInstance from '@/axios/request'
 import { useAuthStore } from '@/stores/auth'
 import { ref } from 'vue'
 

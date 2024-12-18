@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
-import axiosApiInstance from '@/api'
+import axiosApiInstance from '@/axios/request'
 import PersonIcon from './icons/PersonIcon.vue'
 import { useAuthStore } from '@/stores/auth'
 
@@ -47,7 +47,7 @@ const fetchVotersIds = async () => {
 
   const userId = responseVoterIds.data.find((id) => id === authStore.userInfo.userId)
 
-  console.log(responseVoterIds.data, authStore.userInfo.userId)
+  // console.log(responseVoterIds.data, authStore.userInfo.userId)
   if (userId) {
     voted.value = true
   }
@@ -119,6 +119,7 @@ const vote = async () => {
   <li v-if="voted" class="p-10 bg-gray-200 border border-solid border-gray-20 rounded-lg shadow-sm">
     <h3 class="font-bold text-green-600 mb-5">{{ card.text }}</h3>
     <div class="flex flex-col gap-2.5 w-full">
+      <!-- TODO: Поменять button на div -->
       <button
         v-for="(option, i) in card.options"
         :key="i"

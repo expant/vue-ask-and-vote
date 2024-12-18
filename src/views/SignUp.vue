@@ -6,7 +6,7 @@ import { object, string } from 'yup'
 import { addUserDataToLocalStorage } from '@/utils/userData'
 import { Field, Form, ErrorMessage } from 'vee-validate'
 import BaseButton from '@/components/BaseButton.vue'
-import axiosApiInstance from '@/api'
+import axiosApiInstance from '@/axios/request'
 
 const authStore = useAuthStore()
 const router = useRouter()

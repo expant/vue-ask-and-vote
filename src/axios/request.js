@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { useAuthStore } from './stores/auth'
-import router from './router'
+import { useAuthStore } from '@/stores/auth'
+import router from '@/router'
 
 const axiosApiInstance = axios.create()
 const apiKey = import.meta.env.VITE_API_KEY_FIREBASE
