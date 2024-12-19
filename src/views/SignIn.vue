@@ -13,6 +13,7 @@ const router = useRouter()
 const email = ref('')
 const password = ref('')
 
+// TODO: вынести валидацию в src/schemas
 const schema = object({
   email: string().required('Обязательное поле').email('Неверный формат email'),
   password: string().required('Обязательное поле').min(8, 'Пароль должен быть не менее 8 символов'),

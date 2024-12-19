@@ -51,6 +51,7 @@ onMounted(async () => {
   voted.value = await cardsStore.checkVotedByCard(card.value)
 })
 
+// TODO: Добавить loader в vote
 const vote = async () => {
   const pickedIndex = card.value.options.map((item) => item.text).indexOf(picked.value)
   card.value.options[pickedIndex].votersCount = card.value.options[pickedIndex].votersCount + 1
