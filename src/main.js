@@ -7,7 +7,7 @@ import App from './App.vue'
 import './utils/userData.js'
 import './axios/request.js'
 
-// TODO: значения полей firebaseConfig перенести в .env
+// TODO: Move firebaseConfig values to .env
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY_FIREBASE,
@@ -17,8 +17,12 @@ const firebaseConfig = {
   messagingSenderId: '174611854470',
   appId: '1:174611854470:web:bdf218026a7d9ed09a0d07',
 }
+
 const pinia = createPinia()
 
 initializeApp(firebaseConfig)
 
-createApp(App).use(pinia).use(router).mount('#app')
+const app = createApp(App)
+app.use(pinia)
+app.use(router)
+app.mount('#app')
