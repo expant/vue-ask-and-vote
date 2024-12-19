@@ -52,6 +52,8 @@ export const useAuthStore = defineStore('auth', () => {
         userId: response.data.localId,
         refreshToken: response.data.refreshToken,
       }
+
+      console.log(userInfo.value)
       localStorage.setItem(
         'userData',
         JSON.stringify({
