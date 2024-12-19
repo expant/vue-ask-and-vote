@@ -2,15 +2,15 @@
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import EditProfile from '@/components/EditProfile.vue'
-import QuestionCardsUser from '@/components/QuestionCardsUser.vue'
+import CardsListUser from '@/components/CardsListUser.vue'
 
 const authStore = useAuthStore()
 
 const currentTab = ref('EditProfile')
-const tabs = { EditProfile, QuestionCardsUser }
+const tabs = { EditProfile, CardsListUser }
 const contextTabs = {
   EditProfile: 'Редактировать профиль',
-  QuestionCardsUser: 'Мои опросы',
+  CardsListUser: 'Мои опросы',
 }
 const firstLetter = authStore.userInfo.email[0].toUpperCase()
 </script>

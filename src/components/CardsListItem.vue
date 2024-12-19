@@ -1,10 +1,11 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
-import axiosApiInstance from '@/axios/request'
-import PersonIcon from './icons/PersonIcon.vue'
+import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useCardsStore } from '@/stores/cards'
+import PersonIcon from './icons/PersonIcon.vue'
 
 const authStore = useAuthStore()
+const cardsStore = useCardsStore()
 
 const props = defineProps({
   id: {
@@ -37,23 +38,7 @@ const card = ref({})
 const picked = ref('')
 const voted = ref(false)
 
-const fetchVotersIds = async () => {
-  const urlToVoterIds = `${import.meta.env.VITE_FIREBASE_DB_QUESTIONS_URL}/${card.value.id}/voterIds/.json`
-  const responseVoterIds = await axiosApiInstance.get(urlToVoterIds)
-
-  if (!responseVoterIds.data) {
-    return
-  }
-
-  const userId = responseVoterIds.data.find((id) => id === authStore.userInfo.userId)
-
-  // console.log(responseVoterIds.data, authStore.userInfo.userId)
-  if (userId) {
-    voted.value = true
-  }
-}
-
-onMounted(() => {
+onMounted(async () => {
   card.value = {
     id: props.id,
     text: props.text,
@@ -63,12 +48,11 @@ onMounted(() => {
     voterIds: props.voterIds,
   }
 
-  fetchVotersIds()
+  voted.value = await cardsStore.checkVotedByCard(card.value)
 })
 
 const vote = async () => {
   const pickedIndex = card.value.options.map((item) => item.text).indexOf(picked.value)
-  const urlToQuestion = `${import.meta.env.VITE_FIREBASE_DB_QUESTIONS_URL}/${card.value.id}/.json`
   card.value.options[pickedIndex].votersCount = card.value.options[pickedIndex].votersCount + 1
   card.value.totalVotes = card.value.totalVotes + 1
   card.value.voterIds.push(authStore.userInfo.userId)
@@ -79,15 +63,8 @@ const vote = async () => {
     voterIds: card.value.voterIds,
   }
 
-  try {
-    fetchVotersIds()
-
-    const response = await axiosApiInstance.patch(urlToQuestion, JSON.stringify(data))
-
-    voted.value = true
-  } catch (err) {
-    console.log(err)
-  }
+  await cardsStore.updateCard(card.value, data)
+  voted.value = true
 }
 </script>
 
@@ -125,7 +102,7 @@ const vote = async () => {
         :key="i"
         :class="[
           'flex justify-between transition text-left text-sm p-2 rounded',
-          option.text === picked ? 'bg-slate-400' : 'bg-slate-300',
+          option.votersCount === 0 ? 'bg-slate-300' : 'bg-slate-400',
         ]"
         disabled="disabled"
       >

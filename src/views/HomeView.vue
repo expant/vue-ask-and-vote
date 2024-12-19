@@ -1,5 +1,5 @@
 <script setup>
-import QuestionCards from '@/components/QuestionCards.vue'
+import CardsList from '@/components/CardsList.vue'
 import TheHeader from '@/components/TheHeader.vue'
 import AddCardModal from '@/components/AddCardModal.vue'
 import { useAuthStore } from '@/stores/auth'
@@ -22,7 +22,7 @@ const showModal = ref(false)
         Создать опрос
       </button>
 
-      <QuestionCards />
+      <CardsList />
     </main>
     <AddCardModal :showModal="showModal" @hide-modal="showModal = false" />
   </div>

@@ -1,9 +1,11 @@
 <script setup>
 import axiosApiInstance from '@/axios/request'
 import { useAuthStore } from '@/stores/auth'
+import { useCardsStore } from '@/stores/cards'
 import { ref } from 'vue'
 
 const authStore = useAuthStore()
+const cardsStore = useCardsStore()
 const name = ref('')
 const options = ref([
   { text: '', id: 1 },
@@ -25,12 +27,10 @@ const addOption = () => {
 }
 
 const submitForm = async () => {
-  const url = import.meta.env.VITE_FIREBASE_DB_QUESTIONS_URL + '/.json'
   const formattedOptions = options.value.map((option) => ({
     text: option.text,
     votersCount: 0,
   }))
-
   const data = {
     text: name.value,
     options: formattedOptions,
@@ -39,13 +39,7 @@ const submitForm = async () => {
     voterIds: [],
   }
 
-  try {
-    const response = await axiosApiInstance.post(url, JSON.stringify(data))
-    console.log(response.status, response.data)
-  } catch (err) {
-    console.log(err)
-  }
-
+  cardsStore.addNewCard(data)
   emit('hideModal')
 }
 </script>
