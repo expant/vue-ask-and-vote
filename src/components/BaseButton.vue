@@ -1,6 +1,7 @@
 <script setup>
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
+// TODO: изменить loading на state: 'filling', 'sending', 'failed', 'finished'
 const props = defineProps({
   loading: {
     type: Boolean,

@@ -71,6 +71,18 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // TODO: Функция изменения email
+
+  // TODO: Функция изменения пароля
+
+  // TODO: Функция сброса пароля
+
+  // const resetPassword = () => {
+
+  // }
+
+  // TODO: Функция удаления аккаунта
+
   const logout = () => {
     userInfo.value = {
       token: '',

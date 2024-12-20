@@ -11,6 +11,9 @@ const password = ref('')
     <h3 class="text-xl font-bold text-gray-800 mb-4">Редактировать профиль</h3>
 
     <!-- TODO: Добавить иконки к input -->
+    <!-- TODO: Реализовать форму через vee-validate -->
+    <!-- TODO: Релизовать возможность сохранения аватара в Firebase Storage -->
+    <!-- TODO: Реализовать возможность добавления юзернейма -->
     <form @submit.prevent="updateProfile" class="space-y-4">
       <div>
         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>

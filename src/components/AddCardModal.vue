@@ -4,6 +4,8 @@ import { useAuthStore } from '@/stores/auth'
 import { useCardsStore } from '@/stores/cards'
 import { ref } from 'vue'
 
+// TODO: Добавить в форму возможность добавлять #теги
+
 const authStore = useAuthStore()
 const cardsStore = useCardsStore()
 const name = ref('')
