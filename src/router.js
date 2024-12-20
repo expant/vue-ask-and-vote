@@ -1,9 +1,10 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import { useAuthStore } from './stores/auth'
-import HomeView from './views/HomeView.vue'
-import UserProfile from './views/UserProfile.vue'
 import SignIn from './views/SignIn.vue'
 import SignUp from './views/SignUp.vue'
+import HomeView from './views/HomeView.vue'
+import UserProfile from './views/UserProfile.vue'
+import PasswordReset from './views/PasswordReset.vue'
 
 const routes = [
   {
@@ -33,6 +34,14 @@ const routes = [
     component: UserProfile,
     meta: {
       auth: true,
+    },
+  },
+  {
+    path: '/password_reset',
+    name: 'passwordReset',
+    component: PasswordReset,
+    meta: {
+      auth: false,
     },
   },
 ]
