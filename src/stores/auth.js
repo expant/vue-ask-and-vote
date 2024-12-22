@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+// import { useRouter } from 'vue-router'
 import axiosApiInstance from '@/axios/request'
 
 const apiKey = import.meta.env.VITE_API_KEY_FIREBASE
@@ -13,8 +14,6 @@ const getErrorMessage = (err) => {
       return 'Email не найден'
     case 'INVALID_PASSWORD':
       return 'Invalid password'
-    case 'WEAK_PASSWORD : Password should be at least 6 characters':
-      return 'Пароль должен содержать минимум 6 символов'
     case 'INVALID_LOGIN_CREDENTIALS':
       return 'Неправильный логин или пароль'
     default:
@@ -76,10 +75,34 @@ export const useAuthStore = defineStore('auth', () => {
   // TODO: Функция изменения пароля
 
   // TODO: Функция сброса пароля
+  
+  //       Создать switch (mode) {} для определения состояния сброса пароля
+  //       const mode = searchParams.get('mode')
 
-  // const resetPassword = () => {
+  const SendPasswordResetEmail = async (email) => {
+    const payload = { requestType: 'PASSWORD_RESET', email }
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`
+    
+    try {
+      await axiosApiInstance.post(url, payload)
+    } catch (err) {
+      console.error(err)
+    }  
+  }
 
-  // }
+  const changePassword = async (newPassword) => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const oobCode = searchParams.get('oobCode')
+    const lang = searchParams.get('lang') || 'en'
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`
+    
+    try {
+      await axiosApiInstance.post(url, { oobCode })
+      await axiosApiInstance.post(url, { oobCode, newPassword })
+    } catch (err) {
+      console.error(err)
+    }
+  }  
 
   // TODO: Функция удаления аккаунта
 
@@ -92,5 +115,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { auth, userInfo, error, loader, logout }
+  return { auth, userInfo, error, loader, logout, SendPasswordResetEmail, changePassword }
 })
