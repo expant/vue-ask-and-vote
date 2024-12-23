@@ -8,8 +8,6 @@ import { Field, Form, ErrorMessage } from 'vee-validate'
 import BaseButton from '@/components/BaseButton.vue'
 import axiosApiInstance from '@/axios/request'
 
-// TODO: Добавить подверждение почты
-
 const authStore = useAuthStore()
 const router = useRouter()
 
@@ -27,18 +25,18 @@ const signup = async () => {
   await authStore.auth({ email: email.value, password: password.value }, 'signup')
   await addUserToDb()
   addUserDataToLocalStorage(authStore)
-  router.push('/')
+  router.push('/email_verification')
 }
 </script>
 
 <template>
-  <div class="w-screen h-screen flex flex-col justify-center items-center gap-8 font-IBMPlexMono">
+  <div class="w-screen h-screen flex flex-col justify-center items-center gap-8 px-5">
     <h2 class="text-2xl text-green-600">Регистрация</h2>
 
     <Form
       @submit="signup"
       :validation-schema="userSchema"
-      class="relative flex flex-col gap-8 max-w-1/4 rounded-md p-5 bg-white border border-solid shadow-sm"
+      class="relative flex flex-col gap-8 w-full rounded-md p-5 bg-white border border-solid shadow-sm md:w-[400px]"
     >
       <div class="absolute right-5 top-5 text-sm text-red-500" v-if="authStore.error">
         {{ authStore.error }}
@@ -75,5 +73,3 @@ const signup = async () => {
     </Form>
   </div>
 </template>
-
-<style scoped></style>

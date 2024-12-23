@@ -23,15 +23,13 @@ const signin = async () => {
 }
 </script>
 
-<!-- TODO: Добавить возможность сброса пароля -->
-
 <template>
-  <div class="w-screen h-screen flex flex-col justify-center items-center gap-8 font-IBMPlexMono">
+  <div class="w-screen h-screen flex flex-col justify-center items-center gap-8 px-5">
     <h2 class="text-2xl text-green-600">Авторизация</h2>
     <Form
       @submit="signin"
       :validation-schema="userSchema"
-      class="relative flex flex-col gap-8 max-w-1/4 rounded-md p-5 bg-white border border-solid shadow-sm"
+      class="relative flex flex-col gap-8 w-full p-5 bg-white border border-solid rounded-md shadow-sm md:w-[400px]"
     >
       <div class="absolute right-5 top-5 text-sm text-red-500" v-if="authStore.error">
         {{ authStore.error }}
@@ -47,7 +45,12 @@ const signin = async () => {
       </div>
 
       <div class="relative">
-        <label class="inline-block mb-2">Введите пароль 😅</label>
+        <label class="flex justify-between items-end mb-2">
+          <span>Введите пароль 😅</span>
+          <router-link to="/password_reset" class="text-xs text-blue-500 hover:text-blue-700"
+            >Забыли пароль?</router-link
+          >
+        </label>
         <Field
           name="password"
           type="password"
@@ -56,15 +59,11 @@ const signin = async () => {
         />
         <ErrorMessage name="password" class="absolute left-2 top-[85px] text-sm text-red-500" />
 
-        <div class="text-right">
-          <router-link to="/password_reset" class="text-xs decoration-1"
-            >Забыли пароль?</router-link
-          >
-        </div>
+        <div class="text-right"></div>
       </div>
 
       <div>
-        <base-button :loading="authStore.loader">Войти</base-button>
+        <base-button :loading="authStore.loader" class="mt-5">Войти</base-button>
         <div class="text-right mt-2">
           В первый раз тут?
           <router-link to="/signup" class="text-blue-500 hover:text-blue-600">

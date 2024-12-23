@@ -21,7 +21,7 @@ const props = defineProps({
   </button>
   <button
     v-else
-    class="transition flex justify-center items-center w-full font-medium text-xl text-white bg-green-600 rounded-md px-4 py-2.5 hover:bg-green-700"
+    class="transition flex justify-center items-center w-full font-IBMPlexMono font-medium text-xl text-white bg-green-600 rounded-md px-4 py-2.5 hover:bg-green-700"
   >
     <slot />
   </button>
