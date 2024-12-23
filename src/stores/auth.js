@@ -16,6 +16,8 @@ const getErrorMessage = (err) => {
       return 'Invalid password'
     case 'INVALID_LOGIN_CREDENTIALS':
       return 'Неправильный логин или пароль'
+    case 'INVALID_OOB_CODE' || 'EXPIRED_OOB_CODE':
+      return 'Ссылка уже использовалась или её срок действия истек!'
     default:
       throw new Error(`Unknown error message ${message}`)
   }
@@ -30,6 +32,8 @@ export const useAuthStore = defineStore('auth', () => {
   })
   const error = ref('')
   const loader = ref(false)
+
+  const handleEmailVerification = () => {}
 
   const auth = async (payload, type) => {
     const stringUrlType = type === 'signup' ? 'signUp' : 'signInWithPassword'
@@ -74,35 +78,31 @@ export const useAuthStore = defineStore('auth', () => {
 
   // TODO: Функция изменения пароля
 
-  // TODO: Функция сброса пароля
-  
-  //       Создать switch (mode) {} для определения состояния сброса пароля
-  //       const mode = searchParams.get('mode')
+  // Password reset with email
+  const handlePasswordReset = async (data, step) => {
+    loader.value = true
 
-  const SendPasswordResetEmail = async (email) => {
-    const payload = { requestType: 'PASSWORD_RESET', email }
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`
-    
     try {
-      await axiosApiInstance.post(url, payload)
-    } catch (err) {
-      console.error(err)
-    }  
-  }
+      if (step === 'email') {
+        const payload = { requestType: 'PASSWORD_RESET', email: data }
+        const url = `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`
+        await axiosApiInstance.post(url, payload)
+      }
 
-  const changePassword = async (newPassword) => {
-    const searchParams = new URLSearchParams(window.location.search)
-    const oobCode = searchParams.get('oobCode')
-    const lang = searchParams.get('lang') || 'en'
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`
-    
-    try {
-      await axiosApiInstance.post(url, { oobCode })
-      await axiosApiInstance.post(url, { oobCode, newPassword })
+      if (step === 'new password') {
+        const searchParams = new URLSearchParams(window.location.search)
+        const oobCode = searchParams.get('oobCode')
+        const url = `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`
+        await axiosApiInstance.post(url, { oobCode })
+        await axiosApiInstance.post(url, { oobCode, newPassword: data })
+      }
     } catch (err) {
-      console.error(err)
+      error.value = getErrorMessage(err)
+      throw new Error(err)
+    } finally {
+      loader.value = false
     }
-  }  
+  }
 
   // TODO: Функция удаления аккаунта
 
@@ -115,5 +115,5 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { auth, userInfo, error, loader, logout, SendPasswordResetEmail, changePassword }
+  return { auth, userInfo, error, loader, logout, handlePasswordReset }
 })
