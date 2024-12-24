@@ -5,6 +5,7 @@ import SignUp from './views/SignUp.vue'
 import HomeView from './views/HomeView.vue'
 import UserProfile from './views/UserProfile.vue'
 import PasswordReset from './views/PasswordReset.vue'
+import ActionHandler from './views/ActionHandler.vue'
 import EmailVerification from './views/EmailVerification.vue'
 
 const routes = [
@@ -52,6 +53,11 @@ const routes = [
     meta: {
       auth: true,
     },
+  },
+  {
+    path: '/action',
+    name: 'action',
+    component: ActionHandler,
   },
 ]
 
