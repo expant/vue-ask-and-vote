@@ -6,7 +6,6 @@ import HomeView from './views/HomeView.vue'
 import UserProfile from './views/UserProfile.vue'
 import PasswordReset from './views/PasswordReset.vue'
 import ActionHandler from './views/ActionHandler.vue'
-import EmailVerification from './views/EmailVerification.vue'
 
 const routes = [
   {
@@ -44,14 +43,6 @@ const routes = [
     component: PasswordReset,
     meta: {
       auth: false,
-    },
-  },
-  {
-    path: '/email_verification',
-    name: 'emailVerification',
-    component: EmailVerification,
-    meta: {
-      auth: true,
     },
   },
   {

@@ -32,7 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
     email: '',
     userId: '',
     refreshToken: '',
-    emailVerified: false,
+    // emailVerified: false,
   })
   const error = ref('')
   const loader = ref(false)
@@ -43,33 +43,33 @@ export const useAuthStore = defineStore('auth', () => {
       email: data.email,
       userId: data.localId,
       refreshToken: data.refreshToken,
-      emailVerified: false,
+      // emailVerified: false,
     }
   }
 
-  const handleEmailVerification = async () => {
-    const payload = { requestType: 'VERIFY_EMAIL', idToken: userInfo.value.token }
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`
-    try {
-      return await axiosApiInstance.post(url, payload)
-    } catch (err) {
-      error.value = getErrorMessage(err)
-      console.error(err)
-    }
-  }
+  // const handleEmailVerification = async () => {
+  //   const payload = { requestType: 'VERIFY_EMAIL', idToken: userInfo.value.token }
+  //   const url = `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${apiKey}`
+  //   try {
+  //     return await axiosApiInstance.post(url, payload)
+  //   } catch (err) {
+  //     error.value = getErrorMessage(err)
+  //     console.error(err)
+  //   }
+  // }
 
-  const confirmEmailVerification = async () => {
-    console.log('userInfo: ', userInfo.value)
-    const searchParams = new URLSearchParams(window.location.search)
-    const oobCode = searchParams.get('oobCode')
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${apiKey}`
-    try {
-      return await axiosApiInstance.post(url, { oobCode })
-    } catch (err) {
-      error.value = getErrorMessage(err)
-      console.error(err)
-    }
-  }
+  // const confirmEmailVerification = async () => {
+  //   console.log('userInfo: ', userInfo.value)
+  //   const searchParams = new URLSearchParams(window.location.search)
+  //   const oobCode = searchParams.get('oobCode')
+  //   const url = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${apiKey}`
+  //   try {
+  //     return await axiosApiInstance.post(url, { oobCode })
+  //   } catch (err) {
+  //     error.value = getErrorMessage(err)
+  //     console.error(err)
+  //   }
+  // }
 
   const auth = async (payload, type) => {
     const stringUrlType = type === 'signup' ? 'signUp' : 'signInWithPassword'
@@ -147,7 +147,7 @@ export const useAuthStore = defineStore('auth', () => {
     loader,
     logout,
     handlePasswordReset,
-    handleEmailVerification,
-    confirmEmailVerification,
+    // handleEmailVerification,
+    // confirmEmailVerification,
   }
 })

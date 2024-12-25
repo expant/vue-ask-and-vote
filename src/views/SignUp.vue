@@ -7,7 +7,7 @@ import { addUserDataToLocalStorage } from '@/utils/userData'
 import { Field, Form, ErrorMessage } from 'vee-validate'
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 import BaseButton from '@/components/BaseButton.vue'
-import BaseNotification from '@/components/BaseNotification.vue'
+// import BaseNotification from '@/components/BaseNotification.vue'
 import axiosApiInstance from '@/axios/request'
 
 const authStore = useAuthStore()
@@ -16,8 +16,8 @@ const router = useRouter()
 const uid = ref('')
 const email = ref('')
 const password = ref('')
-const isNotificationVisible = ref(false)
-const loadingVerify = ref(false)
+// const isNotificationVisible = ref(false)
+// const loadingVerify = ref(false)
 
 const addUserToDb = async () => {
   uid.value = authStore.userInfo.userId
@@ -28,45 +28,47 @@ const addUserToDb = async () => {
 const signup = async () => {
   try {
     await authStore.auth({ email: email.value, password: password.value }, 'signup')
-    const response = await authStore.handleEmailVerification()
-    if (response.data.email) {
-      isNotificationVisible.value = true
-    }
+    await addUserToDb()
+    router.push('/')
+    // const response = await authStore.handleEmailVerification()
+    // if (response.data.email) {
+    //   isNotificationVisible.value = true
+    // }
   } catch (err) {
     console.error(err)
   }
 }
 
-onMounted(async () => {
-  const searchParams = new URLSearchParams(window.location.search)
-  const mode = searchParams.get('mode')
-  if (mode !== 'verifyEmail') {
-    return
-  }
+// onMounted(async () => {
+//   const searchParams = new URLSearchParams(window.location.search)
+//   const mode = searchParams.get('mode')
+//   if (mode !== 'verifyEmail') {
+//     return
+//   }
 
-  try {
-    loadingVerify.value = true
-    const response = await authStore.confirmEmailVerification()
-    console.log(response.data)
+//   try {
+//     loadingVerify.value = true
+//     const response = await authStore.confirmEmailVerification()
+//     console.log(response.data)
 
-    await addUserToDb()
-    addUserDataToLocalStorage(authStore.userInfo)
-    router.push('/')
-  } catch (err) {
-    console.error(err)
-  } finally {
-    loadingVerify.value = false
-  }
-})
+//     await addUserToDb()
+//     // addUserDataToLocalStorage(authStore.userInfo)
+//     router.push('/')
+//   } catch (err) {
+//     console.error(err)
+//   } finally {
+//     loadingVerify.value = false
+//   }
+// })
 </script>
 
 <template>
   <div class="w-screen h-screen flex flex-col justify-center items-center gap-8 px-5">
-    <div v-if="!loadingVerify">
-      <base-notification v-if="isNotificationVisible"
+    <!-- <div v-if="!loadingVerify"> -->
+      <!-- <base-notification v-if="isNotificationVisible"
         >На <span class="font-bold">{{ email }}</span> было отправленно письмо с ссылкой на
         подтверждение!</base-notification
-      >
+      > -->
       <h2 class="text-2xl text-green-600">Регистрация</h2>
       <Form
         @submit="signup"
@@ -103,8 +105,8 @@ onMounted(async () => {
           </div>
         </div>
       </Form>
-    </div>
+    <!-- </div> -->
 
-    <ClipLoader v-if="loadingVerify" color="#16A34A" size="50px" />
+    <!-- <ClipLoader v-if="loadingVerify" color="#16A34A" size="50px" /> -->
   </div>
 </template>

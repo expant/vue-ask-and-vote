@@ -116,4 +116,5 @@ const vote = async () => {
       <PersonIcon size="14px" color="#9CA3AF" />
     </div>
   </li>
+  <!-- ... rest of the code ... -->
 </template>

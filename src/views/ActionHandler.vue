@@ -17,7 +17,7 @@ onMounted(() => {
 
   switch (mode) {
     case 'verifyEmail':
-      router.push(`/signup?${params}`)
+      // router.push(`/signup?${params}`)
       break
     case 'resetPassword':
       router.push(`/password_reset?${params}`)
