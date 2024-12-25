@@ -6,14 +6,14 @@ const addUserDataToState = (authStore, data) => {
 }
 
 // TODO: Требуется пересмотреть способ хранения токенов на клиенте =================
-const addUserDataToLocalStorage = (authStore) => {
+const addUserDataToLocalStorage = (userData) => {
   localStorage.setItem(
     'userData',
     JSON.stringify({
-      token: authStore.userInfo.token,
-      refreshToken: authStore.userInfo.refreshToken,
-      userId: authStore.userInfo.userId,
-      email: authStore.userInfo.email,
+      token: userData.token,
+      refreshToken: userData.refreshToken,
+      userId: userData.userId,
+      email: userData.email,
     }),
   )
 }

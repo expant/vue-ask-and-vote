@@ -47,13 +47,13 @@ onMounted(async () => {
   try {
     loadingVerify.value = true
     const response = await authStore.confirmEmailVerification()
-    if (response) {
-      await addUserToDb()
-      addUserDataToLocalStorage(authStore)
-      // router.push('/')
-    }
+    console.log(response.data)
+
+    await addUserToDb()
+    addUserDataToLocalStorage(authStore.userInfo)
+    router.push('/')
   } catch (err) {
-    console.error(err.response.data.error.message)
+    console.error(err)
   } finally {
     loadingVerify.value = false
   }

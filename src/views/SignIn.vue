@@ -14,7 +14,7 @@ const password = ref('')
 
 const signin = async () => {
   await authStore.auth({ email: email.value, password: password.value }, 'signin')
-  addUserDataToLocalStorage(authStore)
+  addUserDataToLocalStorage(authStore.userInfo)
   router.push('/')
   // const pathToUser = `${import.meta.env.VITE_FIREBASE_DB_USERS_URL}/${authStore.userInfo.userId}.json`
   // const response = await axios.get(pathToUser)

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 // import { useRouter } from 'vue-router'
 import axiosApiInstance from '@/axios/request'
+import { addUserDataToLocalStorage } from '@/utils/userData'
 
 const apiKey = import.meta.env.VITE_API_KEY_FIREBASE
 
@@ -31,6 +32,7 @@ export const useAuthStore = defineStore('auth', () => {
     email: '',
     userId: '',
     refreshToken: '',
+    emailVerified: false,
   })
   const error = ref('')
   const loader = ref(false)
@@ -41,6 +43,7 @@ export const useAuthStore = defineStore('auth', () => {
       email: data.email,
       userId: data.localId,
       refreshToken: data.refreshToken,
+      emailVerified: false,
     }
   }
 
@@ -82,13 +85,12 @@ export const useAuthStore = defineStore('auth', () => {
         },
       )
       setUserInfo(response.data)
+      addUserDataToLocalStorage(userInfo.value)
 
-      console.log('userInfo: ', userInfo.value)
-
-      if (type === 'signup') {
-        handleEmailVerification(response.data)
-        return
-      }
+      // if (type === 'signup') {
+      //   handleEmailVerification(response.data)
+      //   return
+      // }
     } catch (err) {
       error.value = getErrorMessage(err)
       throw error.value
