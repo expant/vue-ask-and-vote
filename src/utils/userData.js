@@ -3,6 +3,7 @@ const addUserDataToState = (authStore, data) => {
   authStore.userInfo.refreshToken = data.refreshToken
   authStore.userInfo.userId = data.userId
   authStore.userInfo.email = data.email
+  authStore.userInfo.emailVerified = data.emailVerified
 }
 
 // TODO: Требуется пересмотреть способ хранения токенов на клиенте =================
@@ -14,6 +15,7 @@ const addUserDataToLocalStorage = (userData) => {
       refreshToken: userData.refreshToken,
       userId: userData.userId,
       email: userData.email,
+      emailVerified: userData.emailVerified,
     }),
   )
 }

@@ -1,13 +1,64 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import BaseHideContent from './BaseHideContent.vue'
 
-const email = ref('')
-const username = ref('')
-const password = ref('')
+const authStore = useAuthStore()
+const emailVerified = ref(false)
+const fields = ref({
+  email: '',
+  username: '',
+  // password: '',
+})
+const hideContentProps = ref({
+  text: 'Пожалуйста, подтвердите ваш email, чтобы продолжить',
+  buttonText: 'Подтвердить email',
+  actionName: 'confirmEmail',
+  styles: {
+    rounded: 'rounded-lg',
+    bgColor: 'bg-slate-800',
+    bgOpacity: 'bg-opacity-90',
+  },
+})
+
+const updateProfile = () => {
+  const fieldsList = Object.entries(fields.value)
+  const filledFields = fieldsList.filter(([_, field]) => field)
+
+  if (filledFields.length === 0) {
+    console.log('Должно быть заполнено хотя бы одно поле!')
+    return
+  }
+
+  filledFields.forEach(async ([key, value]) => {
+    switch (key) {
+      case 'email':
+        const response = await authStore.changeEmail(value)
+        console.log(response)
+        break
+      case 'username':
+        console.log('Здесь должно происходить обновление username')
+        break
+      default:
+        throw new Error(`Неизвестное поле: ${key}`)
+    }
+  })
+}
+
+const handleEmailConfirmation = async () => {
+  await authStore.handleEmailConfirmation
+  // Менять контент в компоненте BaseHideContent после того как успешно срабатывает запрос
+}
+
+onMounted(async () => {
+  const user = await authStore.getUserData()
+  fields.value.email = user.email
+  emailVerified.value = user.emailVerified
+})
 </script>
 
 <template>
-  <div class="bg-white p-6 border border-solid border-gray-200 rounded-lg shadow-sm">
+  <div class="relative bg-white p-6 border border-solid border-gray-200 rounded-lg shadow-sm">
     <h3 class="text-xl font-bold text-gray-800 mb-4">Редактировать профиль</h3>
 
     <!-- TODO: Добавить иконки к input -->
@@ -20,7 +71,7 @@ const password = ref('')
         <input
           type="email"
           id="email"
-          v-model="email"
+          v-model="fields.email"
           class="mt-1 block w-full px-2 py-1 rounded border border-solid border-gray-200 outline-none"
         />
       </div>
@@ -31,11 +82,12 @@ const password = ref('')
         <input
           type="text"
           id="username"
-          v-model="username"
+          v-model="fields.username"
           class="mt-1 block w-full px-2 py-1 rounded border border-solid border-gray-200 outline-none"
         />
       </div>
-      <div>
+
+      <!-- <div>
         <label for="password" class="block text-sm font-medium text-gray-700">Новый пароль</label>
         <input
           type="password"
@@ -43,8 +95,8 @@ const password = ref('')
           v-model="password"
           class="mt-1 block w-full px-2 py-1 rounded border border-solid border-gray-200 outline-none"
         />
-      </div>
-      <div>
+      </div> -->
+      <!-- <div>
         <label for="avatar" class="block text-sm font-medium text-gray-700">Аватар</label>
         <input type="file" id="avatar" accept="image/*" class="mt-1 block w-full" />
       </div>
@@ -53,7 +105,7 @@ const password = ref('')
           >Фон шапки</label
         >
         <input type="file" id="headerBackground" accept="image/*" class="mt-1 block w-full" />
-      </div>
+      </div> -->
       <div>
         <button
           type="submit"
@@ -63,5 +115,14 @@ const password = ref('')
         </button>
       </div>
     </form>
+
+    <BaseHideContent
+      v-if="!emailVerified"
+      :text="hideContentProps.text"
+      :button-text="hideContentProps.buttonText"
+      :styles="hideContentProps.styles"
+      :actionName="hideContentProps.actionName"
+      @confirm-email="handleEmailConfirmation"
+    />
   </div>
 </template>
