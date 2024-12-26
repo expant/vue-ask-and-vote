@@ -48,6 +48,7 @@ const submitForm = async () => {
 
 <template>
   <div>
+    <!-- TODO: Изменить внешний вид формы, прописать валидацию -->
     <!-- Modal -->
     <div v-if="props.showModal" class="fixed z-10 inset-0 overflow-y-auto">
       <div
