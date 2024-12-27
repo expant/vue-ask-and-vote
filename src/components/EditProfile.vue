@@ -63,7 +63,7 @@ onMounted(async () => {
 
     <!-- TODO: Добавить иконки к input -->
     <!-- TODO: Реализовать форму через vee-validate -->
-    <!-- TODO: Релизовать возможность сохранения аватара в Firebase Storage -->
+    <!-- TODO: Реализовать возможность сохранения аватара в Firebase Storage -->
     <!-- TODO: Реализовать возможность добавления юзернейма -->
     <form @submit.prevent="updateProfile" class="space-y-4">
       <div>
