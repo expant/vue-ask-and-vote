@@ -46,13 +46,38 @@ const updateProfile = () => {
 }
 
 const handleEmailConfirmation = async () => {
-  await authStore.handleEmailConfirmation
+  try {
+    await authStore.handleEmailVerification()
+  } catch (err) {
+    console.error('Ошибка при подтверждении email:', err)
+  }
   // Менять контент в компоненте BaseHideContent после того как успешно срабатывает запрос
 }
 
 onMounted(async () => {
   const user = await authStore.getUserData()
   fields.value.email = user.email
+
+  const searchParams = new URLSearchParams(window.location.search)
+  const mode = searchParams.get('mode')
+  if (mode !== 'verifyEmail') {
+    return
+  }
+
+  try {
+    // loadingVerify.value = true
+    const response = await authStore.confirmEmailVerification()
+    console.log(response.data)
+
+    await addUserToDb()
+    // addUserDataToLocalStorage(authStore.userInfo)
+  } catch (err) {
+    console.error(err)
+  }
+  // finally {
+  //   loadingVerify.value = false
+  // }
+
   emailVerified.value = user.emailVerified
 })
 </script>

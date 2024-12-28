@@ -22,7 +22,6 @@ const insertTokenIntoUrl = (config) => {
 const refreshTokenByError = async (error) => {
   const authStore = useAuthStore()
   const originalRequest = error.config
-
   const isInvalidIdToken = error.response.data.error.message === 'INVALID_ID_TOKEN'
 
   if (
@@ -50,6 +49,8 @@ const refreshTokenByError = async (error) => {
         JSON.stringify({
           token: newTokens.data.access_token,
           refreshToken: newTokens.data.refresh_token,
+          email: authStore.userInfo.email,
+          emailVerified: authStore.userInfo.emailVerified,
         }),
       )
     } catch (err) {
