@@ -58,12 +58,11 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const confirmEmailVerification = async () => {
-    const searchParams = new URLSearchParams(window.location.search)
-    const oobCode = searchParams.get('oobCode')
+  const confirmEmailVerification = async (oobCode) => {
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${apiKey}`
     try {
-      return await axiosApiInstance.post(url, { oobCode })
+      await axiosApiInstance.post(url, { oobCode })
+      localStorage.setItem('userData', JSON.stringify({ ...userInfo.value, emailVerified: true }))
     } catch (err) {
       error.value = getErrorMessage(err)
       console.error(err)

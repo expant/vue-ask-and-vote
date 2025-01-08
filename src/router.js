@@ -60,9 +60,14 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
 
-  if (to.name === 'home') {
-    next()
-    return
+  // if (to.name === 'home') {
+  //   next()
+  //   return
+  // }
+
+
+  if (to.name === 'action') {
+    next(false)
   }
 
   if (to.meta.auth && !authStore.userInfo.token) {

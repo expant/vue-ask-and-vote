@@ -6,6 +6,7 @@ import { ref } from 'vue'
 
 // TODO: Добавить в форму возможность добавлять #теги
 
+const MAX_NUM_OPTIONS = 10
 const authStore = useAuthStore()
 const cardsStore = useCardsStore()
 const name = ref('')
@@ -20,7 +21,7 @@ const props = defineProps({
 const emit = defineEmits('hideModal')
 
 const addOption = () => {
-  if (options.value.length >= 10) {
+  if (options.value.length >= MAX_NUM_OPTIONS) {
     return
   }
 

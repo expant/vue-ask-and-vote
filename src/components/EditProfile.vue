@@ -56,28 +56,9 @@ const handleEmailConfirmation = async () => {
 
 onMounted(async () => {
   const user = await authStore.getUserData()
+
+  console.log(user)
   fields.value.email = user.email
-
-  const searchParams = new URLSearchParams(window.location.search)
-  const mode = searchParams.get('mode')
-  if (mode !== 'verifyEmail') {
-    return
-  }
-
-  try {
-    // loadingVerify.value = true
-    const response = await authStore.confirmEmailVerification()
-    console.log(response.data)
-
-    await addUserToDb()
-    // addUserDataToLocalStorage(authStore.userInfo)
-  } catch (err) {
-    console.error(err)
-  }
-  // finally {
-  //   loadingVerify.value = false
-  // }
-
   emailVerified.value = user.emailVerified
 })
 </script>
