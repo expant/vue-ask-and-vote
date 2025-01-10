@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onBeforeMount, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import BaseHideContent from './BaseHideContent.vue'
 
@@ -22,6 +22,11 @@ const hideContentProps = ref({
 })
 
 const updateProfile = () => {
+  if (!emailVerified.value) {
+    console.log('email not verified')
+    return
+  }
+
   const fieldsList = Object.entries(fields.value)
   const filledFields = fieldsList.filter(([_, field]) => field)
 
@@ -33,7 +38,9 @@ const updateProfile = () => {
   filledFields.forEach(async ([key, value]) => {
     switch (key) {
       case 'email':
+        console.log(key, value)
         const response = await authStore.changeEmail(value)
+        fields.value.email = value
         console.log(response)
         break
       case 'username':
@@ -57,7 +64,6 @@ const handleEmailConfirmation = async () => {
 onMounted(async () => {
   const user = await authStore.getUserData()
 
-  console.log(user)
   fields.value.email = user.email
   emailVerified.value = user.emailVerified
 })

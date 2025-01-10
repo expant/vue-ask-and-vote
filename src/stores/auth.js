@@ -114,21 +114,26 @@ export const useAuthStore = defineStore('auth', () => {
   const changeEmail = async (newEmail) => {
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${apiKey}`
     const idToken = JSON.parse(localStorage.getItem('userData')).token
-    const payload = {
-      idToken,
-      email: newEmail,
-      returnSecureToken: true,
-    }
 
-    console.log(payload)
+    // const payload = {
+    //   idToken,
+    //   email: newEmail,
+    //   returnSecureToken: true,
+    // }
 
     try {
-      // const response = await axiosApiInstance.post(url, payload)
-      // console.log(response)
-      await getUserData()
+      const response = await axiosApiInstance.post(url, {
+        idToken,
+        email: newEmail,
+        returnSecureToken: true,
+      })
+      console.log('response: ', response)
+      // localStorage.setItem('userData', JSON.stringify({ ...data, email: newEmail }))
+      // console.log('email успешно изменён')
     } catch (err) {
-      console.log(err)
-      error.value = getErrorMessage(err)
+      console.log('Error response: ', err.response)
+      // error.value = getErrorMessage(err)
+      // console.log(error.value)
     }
   }
 
@@ -161,7 +166,6 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   // TODO: Функция удаления аккаунта
-
   const logout = () => {
     userInfo.value = {
       token: '',

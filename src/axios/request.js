@@ -25,8 +25,9 @@ const refreshTokenByError = async (error) => {
   const isInvalidIdToken = error.response.data.error.message === 'INVALID_ID_TOKEN'
 
   if (
-    (error.response.status === 400 && !originalRequest._retry) ||
-    (isInvalidIdToken && !originalRequest._retry)
+    // (error.response.status === 400 && !originalRequest._retry) ||
+    isInvalidIdToken &&
+    !originalRequest._retry
   ) {
     originalRequest._retry = true
 
@@ -40,7 +41,7 @@ const refreshTokenByError = async (error) => {
         },
       )
 
-      console.log(authStore.userInfo)
+      console.log('sdfsdfsd')
 
       authStore.userInfo.token = newTokens.data.access_token
       authStore.userInfo.refreshToken = newTokens.data.refresh_token
