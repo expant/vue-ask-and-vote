@@ -1,5 +1,5 @@
 <script setup>
-import CardsListItem from '@/components/CardsListItem.vue'
+import PollItem from '@polls/PollItem.vue'
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 import { ref, onMounted } from 'vue'
 import { useCardsStore } from '@/stores/cards'
@@ -12,9 +12,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <ul class="w-full flex flex-col gap-7 md:w-1/3">
+  <ul class="w-full flex flex-col gap-7 lg:w-1/2">
     <ClipLoader v-if="cardsStore.loader" />
-    <CardsListItem
+    <PollItem
       v-for="(card, i) in cardsStore.cards"
       :key="i"
       :id="card.id"

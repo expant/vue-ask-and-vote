@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useCardsStore } from '@/stores/cards'
-import PersonIcon from './icons/PersonIcon.vue'
+import PersonIcon from '../icons/PersonIcon.vue'
 
 const authStore = useAuthStore()
 const cardsStore = useCardsStore()
@@ -54,7 +54,7 @@ onMounted(async () => {
 // TODO: Добавить loader в vote
 const vote = async () => {
   const pickedIndex = card.value.options.map((item) => item.text).indexOf(picked.value)
-  card.value.options[pickedIndex].votersCount = card.value.options[pickedIndex].votersCount + 1
+  card.value.options[pickedIndex].votes = card.value.options[pickedIndex].votes + 1
   card.value.totalVotes = card.value.totalVotes + 1
   card.value.voterIds.push(authStore.userInfo.userId)
 
@@ -63,6 +63,8 @@ const vote = async () => {
     options: card.value.options,
     voterIds: card.value.voterIds,
   }
+
+  console.log(card.value, data)
 
   await cardsStore.updateCard(card.value, data)
   voted.value = true
@@ -103,12 +105,12 @@ const vote = async () => {
         :key="i"
         :class="[
           'flex justify-between transition text-left text-sm p-2 rounded',
-          option.votersCount === 0 ? 'bg-slate-300' : 'bg-slate-400',
+          option.votes === 0 ? 'bg-slate-300' : 'bg-slate-400',
         ]"
         disabled="disabled"
       >
         <span>{{ option.text }}</span>
-        <span class="text-gray-500">{{ option.votersCount }}</span>
+        <span class="text-gray-500">{{ option.votes }}</span>
       </button>
     </div>
     <div class="flex justify-end gap-1 text-xs text-gray-400 text-right mt-3">

@@ -32,7 +32,7 @@ const addOption = () => {
 const submitForm = async () => {
   const formattedOptions = options.value.map((option) => ({
     text: option.text,
-    votersCount: 0,
+    votes: 0,
   }))
   const data = {
     text: name.value,
@@ -40,10 +40,12 @@ const submitForm = async () => {
     createdAt: new Date().toISOString(),
     authorId: authStore.userInfo.userId,
     voterIds: [],
+    totalVotes: 0,
   }
 
   cardsStore.addNewCard(data)
   emit('hideModal')
+  // TODO: сброс формы после создания опроса
 }
 </script>
 

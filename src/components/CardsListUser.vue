@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted } from 'vue'
-import CardsList from './CardsList.vue'
+import { PollList } from '@polls'
 import { useCardsStore } from '@/stores/cards'
 
 const cardsStore = useCardsStore()

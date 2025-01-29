@@ -1,7 +1,6 @@
 <script setup>
-import CardsList from '@/components/CardsList.vue'
 import TheHeader from '@/components/TheHeader.vue'
-import AddCardModal from '@/components/AddCardModal.vue'
+import { PollList, PollCreateModal } from '@polls'
 import { useAuthStore } from '@/stores/auth'
 import { ref } from 'vue'
 
@@ -22,8 +21,8 @@ const showModal = ref(false)
         Создать опрос
       </button>
 
-      <CardsList />
+      <PollList />
     </main>
-    <AddCardModal :showModal="showModal" @hide-modal="showModal = false" />
+    <PollCreateModal :showModal="showModal" @hide-modal="showModal = false" />
   </div>
 </template>

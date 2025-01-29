@@ -114,23 +114,20 @@ export const useAuthStore = defineStore('auth', () => {
   const changeEmail = async (newEmail) => {
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${apiKey}`
     const idToken = JSON.parse(localStorage.getItem('userData')).token
-
-    // const payload = {
-    //   idToken,
-    //   email: newEmail,
-    //   returnSecureToken: true,
-    // }
+    const payload = {
+      idToken,
+      email: newEmail,
+      returnSecureToken: true,
+    }
 
     try {
-      const response = await axiosApiInstance.post(url, {
-        idToken,
-        email: newEmail,
-        returnSecureToken: true,
-      })
+      const response = await axiosApiInstance.post(url, payload)
       console.log('response: ', response)
       // localStorage.setItem('userData', JSON.stringify({ ...data, email: newEmail }))
       // console.log('email успешно изменён')
     } catch (err) {
+      const errResponse = await getUserData()
+      console.log('userData: ', errResponse)
       console.log('Error response: ', err.response)
       // error.value = getErrorMessage(err)
       // console.log(error.value)
